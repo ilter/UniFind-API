@@ -9,6 +9,9 @@ verify_ssl = true
 fastapi = "*"
 hypercorn = "*"
 uvicorn = "*"
+pymongo = "*"
+motor = "*"
+dnspython = "*"
 
 [requires]
 python_version = "3.8"

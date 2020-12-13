@@ -1,38 +1,27 @@
-from typing import Optional
 from fastapi import FastAPI
-from pydantic import BaseModel
+import uvicorn
+from motor.motor_asyncio import AsyncIOMotorClient
+from apps.school.routers import router as school_router
 
 app = FastAPI()
 
-class School(BaseModel):
-    school_name: str
-    country:str
-    student_count: int
-    isAccepting: Optional[bool] = None
+app.include_router(school_router, tags=["Schools"], prefix="/schools")
 
-database = []
 
-@app.get('/')
-def index():
-    return {'Hello':'This is my API'}
+@app.on_event("startup")
+async def connect_db():
+    app.mongodb_client = AsyncIOMotorClient()
+    app.mongodb = app.mongodb_client[]
 
-@app.get('/schools')
-def get_schools():
-    return database
 
-@app.delete('/delete_school')
-def delete_school(id:int):
-    return database.remove(database[id])
+@app.on_event("shutdown")
+async def startup_db():
+    app.mongodb_client.close()
 
-@app.post('/add_schools')
-def add_schools(school_id:int,school_name:str,country:str,student_count:str,isAccepting:bool):
-    new_school = {
-        "school_id":school_id,
-        "school_name":school_name,
-        "country":country,
-        "student_count":student_count,
-        "isAccepting":isAccepting
-        }
-    database.append(new_school)
-    return new_school
 
+if __name__ == "__main__":
+    uvicorn.run(
+        "main:app",
+        host="0.0.0.0",
+        port="5555",
+    )
