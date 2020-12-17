@@ -36,7 +36,6 @@ async def add_school(school: SchoolModel = Body(...)):
 @router.get("/{id}", response_description="Get single School")
 async def show_school(id: str):
     school = database.find_one({"_id": id})
-    print("Show_School_Test", school)
     if school is not None:
         return school
     raise HTTPException(status_code=404, detail="School with {} is none".format(id))
@@ -44,7 +43,6 @@ async def show_school(id: str):
 
 @router.delete("/{id}", response_description="Delete School")
 async def delete_school(id: str):
-    item = database.find_one({"_id": id})
     delete_result = database.delete_one({"_id": id})
 
     if delete_result.deleted_count == 1:
