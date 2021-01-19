@@ -12,6 +12,7 @@ uvicorn = "*"
 pymongo = "*"
 motor = "*"
 dnspython = "*"
+python-multipart = "*"
 
 [requires]
 python_version = "3.8"
