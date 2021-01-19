@@ -2,6 +2,7 @@ from fastapi import FastAPI
 import uvicorn
 from database import Database
 from apps.school.routers import router as school_router
+from apps.auth.routers import router as auth_router
 
 # App & MongoDB
 app = FastAPI()
@@ -9,7 +10,7 @@ database = Database()
 
 # Routes
 app.include_router(school_router, tags=["Schools"], prefix="/schools")
-
+app.include_router(auth_router, tags=["auth"])
 
 @app.on_event("startup")
 async def connect_db():
